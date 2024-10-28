@@ -1,0 +1,10 @@
+@if (table) {
+    <article>
+        <h2>{{ table.name}}</h2>
+        <ul>
+            @for (attribute of table.attributes; track $index) {
+                <li>{{attribute}}</li>
+            }
+        </ul>
+    </article>
+}
