@@ -1,0 +1,17 @@
+header {
+    width: var(--header-width);
+    height: var(--header-height);
+    background-color: var(--header-bgcolor);
+    
+    nav {
+        height: 100%;
+        ul {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            list-style: none;
+            justify-content: space-around;
+            align-items: center;
+        }
+    }
+}

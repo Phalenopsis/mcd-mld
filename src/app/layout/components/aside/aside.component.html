@@ -1,0 +1,20 @@
+<aside>
+    <nav>
+        <ul>
+            <li><button (click)="displayTableMaker()" [ngClass]="{'active' : view == enum.MAKE_TABLE}">Gérer les tables</button></li>
+            <li><button (click)="displayLinkMaker()" [ngClass]="{'active' : view == enum.MAKE_LINK}">Gérer les liens</button></li>
+            <li><button (click)="displayIndexMaker()" [ngClass]="{'active' : view == enum.MAKE_INDEX}">Gérer les index</button></li>
+        </ul>
+    </nav>
+    @if (view == enum.MAKE_TABLE) {
+        <app-table-form></app-table-form>
+    }
+    @if (view == enum.MAKE_LINK) {
+        <app-link-form></app-link-form>
+    }
+    @if (view == enum.MAKE_INDEX) {
+        <app-index-form></app-index-form>
+    }   
+</aside>
+
+
