@@ -1,9 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TableService } from '../../../../../domain/mcd/services/table/table.service';
+import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-table.service';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { map, Observable, take } from 'rxjs';
+import { map, Observable, switchMap, take, tap } from 'rxjs';
 import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { AsyncPipe } from '@angular/common';
+import { RelationType } from '../../../../../domain/models/relation-type.enum';
+import { McdLink } from '../../../../../domain/mcd/models/mcd-link.class';
 
 @Component({
   selector: 'app-link-form',
@@ -13,13 +15,14 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: '../aside-form.component.css'
 })
 export class LinkFormComponent implements OnInit {
-  tableService: TableService = inject(TableService);
+  tableService: McdTableService = inject(McdTableService);
 
   formBuilder = inject(FormBuilder);
 
-  declare $tables: Observable<string[]>;
+  declare $tableNames: Observable<string[]>;
+  declare $tables: Observable<McdTable[]>;
 
-  relationTypeList = ["OneToOne", "OneToMany", "ManyToOne", "ManyToMany"];
+  relationTypeList = Object.values(RelationType);
 
   linkForm = this.formBuilder.group({
     tables: this.formBuilder.group({
@@ -32,14 +35,34 @@ export class LinkFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.$tables = this.tableService.$getTableList().pipe(
+    this.$tableNames = this.tableService.$getTableList().pipe(
       map((tables: McdTable[]) => tables.map((table: McdTable) => table.name))
-    )
+    );
+    this.$tables = this.tableService.$getTableList();
   }
 
   onSubmit() {
     if (this.linkForm.valid) {
-      console.log('formulaire ok', this.linkForm.value);
+      let table1: McdTable;
+      let table2: McdTable;
+      this.$tables.pipe(
+        tap((tables: McdTable[]) => {
+          table1 = tables.filter(table => table.name === (this.linkForm.value.tables?.table1 as string)).shift() as McdTable;
+          table2 = tables.filter(table => table.name === (this.linkForm.value.tables?.table2 as string)).shift() as McdTable;
+        }),
+        take(1)
+      ).subscribe(
+        () => {
+          const link: McdLink = new McdLink(
+            table1,
+            table2,
+            this.linkForm.value.action as string,
+            this.linkForm.value.relationType as RelationType
+          );
+          console.log(link);
+          // $link.next(link);
+        }
+      );
     } else {
       console.log('Formulaire KO');
     }
@@ -47,10 +70,9 @@ export class LinkFormComponent implements OnInit {
 
   tableIsKnownValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (!this.$tables) return { tableIsKnown: true };
-      console.log('table')
+      if (!this.$tableNames) return { tableIsKnown: true };
       let tablesName: string[] = [];
-      this.$tables.pipe(take(1)).subscribe(
+      this.$tableNames.pipe(take(1)).subscribe(
         tables => tablesName = tables
       )
       return tablesName.includes(control.value) ? null : { tableIsKnown: true };

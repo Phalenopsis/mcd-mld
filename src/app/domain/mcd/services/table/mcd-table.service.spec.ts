@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TableService } from './table.service';
+import { McdTableService } from './mcd-table.service';
 
 describe('TableService', () => {
-  let service: TableService;
+  let service: McdTableService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TableService);
+    service = TestBed.inject(McdTableService);
   });
 
   it('should be created', () => {

@@ -1,7 +1,7 @@
 import { NgFor } from '@angular/common';
 import { Attribute, Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TableService } from '../../../../../domain/mcd/services/table/table.service';
+import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-table.service';
 import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { McdTableAttribute } from '../../../../../domain/mcd/models/mcd-table-attribute.type';
 import { FocusDirective } from '../../../../directives/focus.directive';
@@ -14,7 +14,7 @@ import { FocusDirective } from '../../../../directives/focus.directive';
   styleUrl: '../aside-form.component.css'
 })
 export class TableFormComponent {
-  tableService: TableService = inject(TableService);
+  tableService: McdTableService = inject(McdTableService);
 
   formBuilder = inject(FormBuilder);
   tableForm = this.formBuilder.group({

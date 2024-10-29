@@ -5,7 +5,7 @@ import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TableService {
+export class McdTableService {
   tables = [
     new McdTable("Auteur", ["id", "nom", "prénom"]),
     new McdTable("Livre", ["id", "titre", "éditeur", "nombre de pages"]),

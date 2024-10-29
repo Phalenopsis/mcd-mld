@@ -5,7 +5,7 @@
             <label for="table1">Table 1</label>
             <select name="table1" formControlName="table1">
                 <option value="">--Choisissez une table--</option>
-                @for (table of ($tables | async); track $index) {
+                @for (table of ($tableNames | async); track $index) {
                     <option value="{{table}}">{{table}}</option>
                 }
             </select>
@@ -22,7 +22,7 @@
             <label for="table2">Table 2</label>
             <select name="table2" formControlName="table2">
                 <option value="">--Choisissez une table--</option>
-                @for (table of ($tables | async); track $index) {
+                @for (table of ($tableNames | async); track $index) {
                     <option value="{{table}}">{{table}}</option>
                 }
             </select>
