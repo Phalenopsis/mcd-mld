@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TableService } from '../../../../domain/mcd/services/table/table.service';
+import { McdTableService } from '../../../../domain/mcd/services/table/mcd-table.service';
 import { McdTable } from '../../../../domain/mcd/models/mcd-table.class';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -13,7 +13,7 @@ import { TableCardComponent } from '../table-card/table-card.component';
   styleUrls: ['./table-list.component.css', '../main.css']
 })
 export class TableListComponent implements OnInit {
-  service: TableService = inject(TableService);
+  service: McdTableService = inject(McdTableService);
   declare $tables: Observable<McdTable[]>;
 
   ngOnInit(): void {

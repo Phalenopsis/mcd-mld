@@ -2,7 +2,7 @@ import { AfterViewInit, Component, DestroyRef, ElementRef, inject, OnInit, ViewC
 import { Observable } from 'rxjs';
 import { ATTRIBUTE_FONT_SIZE, TABLE_BORDER_THICKNESS, TABLE_NAME_PADDING as SPACE_UNDER_TABLE_NAME, TABLE_ATTRIBUTE_PADDING, TABLE_NAME_FONT_SIZE, TABLE_PADDING } from '../../../../canvas/constants/canvas.constant';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TableService } from '../../../../domain/mcd/services/table/table.service';
+import { McdTableService } from '../../../../domain/mcd/services/table/mcd-table.service';
 import { DrawingService } from '../../../../canvas/services/drawing/drawing.service';
 import { CartesianCoordinate } from '../../../../plan-systems/models/cartesian-coordinate.class';
 import { Rectangle } from '../../../../plan-systems/models/rectangle.class';
@@ -20,7 +20,7 @@ import { ArchimedeanSpiral } from '../../../../plan-systems/models/archimedean-s
 })
 export class MainCanvasComponent implements OnInit, AfterViewInit {
   private destroyRef: DestroyRef = inject(DestroyRef);
-  tableService: TableService = inject(TableService);
+  tableService: McdTableService = inject(McdTableService);
   drawingService: DrawingService = inject(DrawingService);
 
   declare canvas: HTMLCanvasElement;
