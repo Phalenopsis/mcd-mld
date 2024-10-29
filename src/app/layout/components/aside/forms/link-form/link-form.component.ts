@@ -59,10 +59,14 @@ export class LinkFormComponent implements OnInit {
             this.linkForm.value.action as string,
             this.linkForm.value.relationType as RelationType
           );
+          // for verification
           console.log(link);
+          // TODO
           // $link.next(link);
+          this.linkForm.reset();
         }
       );
+
     } else {
       console.log('Formulaire KO');
     }
