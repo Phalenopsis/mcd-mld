@@ -13,16 +13,22 @@ export class McdTableService {
     new McdTable("Couleur", ["nom"]),
     new McdTable("Passager", ["nom", "prenom"])
   ];
-  tableList: BehaviorSubject<McdTable[]> = new BehaviorSubject(this.tables);
+  $tableList: BehaviorSubject<McdTable[]> = new BehaviorSubject(this.tables);
 
   constructor() { }
 
   addTable(table: McdTable) {
     this.tables.push(table);
-    this.tableList.next(this.tables);
+    this.$tableList.next(this.tables);
   }
 
   $getTableList(): Observable<McdTable[]> {
-    return this.tableList.asObservable();
+    return this.$tableList.asObservable();
+  }
+
+  $getTableByName(name: string): Observable<McdTable> {
+    return this.$tableList.pipe(
+      map((tables: McdTable[]) => tables.filter(table => table.name === name).shift() as McdTable)
+    );
   }
 }
