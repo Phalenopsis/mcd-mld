@@ -56,7 +56,7 @@ export class MainCanvasComponent implements OnInit, AfterViewInit {
 
   #drawRectangle(ctx: CanvasRenderingContext2D, position: CartesianCoordinate, rectangle: Rectangle, color: string = "black") {
     ctx.fillStyle = color;
-    ctx.fillRect(position.getX(), position.getY(), rectangle.width, rectangle.height);
+    ctx.fillRect(position.getX(), position.getY(), rectangle.getWidth(), rectangle.getHeight());
   }
   // ancienne version
   // #drawTables() {
@@ -106,8 +106,8 @@ export class MainCanvasComponent implements OnInit, AfterViewInit {
   createCanvas(table: McdTable): HTMLCanvasElement {
     const rect = this.getTableSize(table);
     const canvas = document.createElement('canvas');
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    canvas.width = rect.getWidth();
+    canvas.height = rect.getHeight();
     this.#drawBorder(canvas);
     return canvas;
   }
@@ -167,7 +167,7 @@ export class MainCanvasComponent implements OnInit, AfterViewInit {
   }
 
   drawSpiral() {
-    const average = this.#getTableList().reduce((acc, cur) => acc + cur.getSize().width, 0) / this.#getTableList().length;
+    const average = this.#getTableList().reduce((acc, cur) => acc + cur.getSize().getWidth(), 0) / this.#getTableList().length;
     const nbTables: number = 13;
     const nbTableMaxPerTurn = 6;
     // const nbSpirals = Math.min(nbTableMaxPerTurn, nbTables);

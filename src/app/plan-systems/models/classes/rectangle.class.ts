@@ -6,8 +6,16 @@ export class Rectangle {
     }
 
     constructor(
-        public width: number,
-        public height: number) { }
+        private width: number,
+        private height: number) { }
+
+    getWidth(): number {
+        return this.width;
+    }
+
+    getHeight(): number {
+        return this.height;
+    }
 
     getArea(): number {
         return this.width * this.height;

@@ -31,8 +31,8 @@ export class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
      * @returns CartesianCoordinate
      */
     transformIntoCanvasCoordinate(canvasRect: Rectangle): CartesianCoordinate {
-        let originX = Math.round(canvasRect.width / 2);
-        let originY = Math.round(canvasRect.height / 2);
+        let originX = Math.round(canvasRect.getWidth() / 2);
+        let originY = Math.round(canvasRect.getHeight() / 2);
 
         return new CartesianCoordinate(this.x + originX, this.y + originY);
     }

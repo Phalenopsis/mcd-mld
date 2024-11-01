@@ -26,12 +26,12 @@ export class CalcTablePositionService {
 
   findPositionIfTablesAreTwo(canvasSize: Rectangle, tableList: TableWithCanvas[]): CartesianCoordinate[] {
     const rectList = tableList.map(table => table.getSize());
-    const totalOccupedWidth = rectList.reduce((acc: number, curr: Rectangle) => acc + curr.width, 0);
-    const totalFreeWidth = canvasSize.width - totalOccupedWidth;
+    const totalOccupedWidth = rectList.reduce((acc: number, curr: Rectangle) => acc + curr.getWidth(), 0);
+    const totalFreeWidth = canvasSize.getWidth() - totalOccupedWidth;
     const position1x = Math.round(totalFreeWidth / 3);
-    const position2x = position1x * 2 + rectList[0].width;
-    const position1y = Math.round((canvasSize.height - rectList[0].height) / 2);
-    const position2y = Math.round((canvasSize.height - rectList[1].height) / 2);
+    const position2x = position1x * 2 + rectList[0].getWidth();
+    const position1y = Math.round((canvasSize.getHeight() - rectList[0].getHeight()) / 2);
+    const position2y = Math.round((canvasSize.getHeight() - rectList[1].getHeight()) / 2);
     const position1: CartesianCoordinate = new CartesianCoordinate(position1x, position1y);
     const position2: CartesianCoordinate = new CartesianCoordinate(position2x, position2y);
     return [position1, position2];
