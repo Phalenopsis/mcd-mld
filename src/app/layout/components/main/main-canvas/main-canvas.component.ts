@@ -4,11 +4,11 @@ import { ATTRIBUTE_FONT_SIZE, TABLE_BORDER_THICKNESS, TABLE_NAME_PADDING as SPAC
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { McdTableService } from '../../../../domain/mcd/services/table/mcd-table.service';
 import { DrawingService } from '../../../../canvas/services/drawing/drawing.service';
-import { CartesianCoordinate } from '../../../../plan-systems/models/cartesian-coordinate.class';
-import { Rectangle } from '../../../../plan-systems/models/rectangle.class';
+import { CartesianCoordinate } from '../../../../plan-systems/models/classes/cartesian-coordinate.class';
+import { Rectangle } from '../../../../plan-systems/models/classes/rectangle.class';
 import { TableWithCanvas } from '../../../../canvas/models/table-with-canvas.class';
 import { McdTable } from '../../../../domain/mcd/models/mcd-table.class';
-import { ArchimedeanSpiral } from '../../../../plan-systems/models/archimedean-spiral.class';
+import { ArchimedeanSpiral } from '../../../../plan-systems/models/classes/archimedean-spiral.class';
 
 
 @Component({
@@ -187,7 +187,7 @@ export class MainCanvasComponent implements OnInit, AfterViewInit {
 
     for (let i = 0; i < nbSpirals; i += 1) {
       const spiral: ArchimedeanSpiral = new ArchimedeanSpiral(distanceBetweenLoops, nbPointsByLoop, nbTurns, i * 2 * Math.PI / nbSpirals);
-      for (let point of spiral.cartesianPoints) {
+      for (let point of spiral.getCartesianPoints()) {
         if (!point.isSame(new CartesianCoordinate(0, 0))) {
           const pointInCanvas = point.transformIntoCanvasCoordinate(new Rectangle(this.canvas.width, this.canvas.height));
           points.push(pointInCanvas);

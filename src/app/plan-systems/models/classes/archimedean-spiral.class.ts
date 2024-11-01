@@ -1,13 +1,24 @@
 import { CartesianCoordinate } from "./cartesian-coordinate.class";
 import { PolarCoordinate } from "./polar-coordinate.class";
 
+/**
+ * 
+ * @param distanceBetweenLoops
+ * @param nbPointsByLoop 
+ * @param nbTurns 
+ * @param additionalAngle : angle in radians
+ */
 export class ArchimedeanSpiral {
-    polarPoints: PolarCoordinate[] = [];
-    cartesianPoints: CartesianCoordinate[] = [];
+    private polarPoints: PolarCoordinate[] = [];
+    private cartesianPoints: CartesianCoordinate[] = [];
 
     constructor(distanceBetweenLoops: number, nbPointsByLoop: number, nbTurns: number, additionalAngle: number = 0) {
         this.#setPolarPoints(distanceBetweenLoops, nbPointsByLoop, nbTurns, additionalAngle);
         this.#setCartesianPoints();
+    }
+
+    getCartesianPoints(): CartesianCoordinate[] {
+        return this.cartesianPoints;
     }
 
     #setPolarPoints(distanceBetweenLoops: number, nbPointsByLoop: number, nbTurns: number, additionalAngle: number = 0) {

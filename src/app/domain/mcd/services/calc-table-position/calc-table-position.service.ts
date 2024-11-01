@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Rectangle } from '../../../../plan-systems/models/rectangle.class';
+import { Rectangle } from '../../../../plan-systems/models/classes/rectangle.class';
 import { TableWithCanvas } from '../../../../canvas/models/table-with-canvas.class';
-import { CartesianCoordinate } from '../../../../plan-systems/models/cartesian-coordinate.class';
+import { CartesianCoordinate } from '../../../../plan-systems/models/classes/cartesian-coordinate.class';
 
 
 @Injectable({

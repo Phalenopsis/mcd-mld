@@ -1,7 +1,9 @@
 import { Rectangle } from "./rectangle.class";
 import { PolarCoordinate } from "./polar-coordinate.class";
+import { MINIMUM_ACCEPTABLE_DIFFERENCE } from "../../constants/constants.constant";
+import { Coordinate } from "../interfaces/coordinate.interface";
 
-export class CartesianCoordinate {
+export class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
     constructor(
         public x: number,
         public y: number
@@ -20,14 +22,19 @@ export class CartesianCoordinate {
      * @param canvasRect  a Rectangle with canvas's width and height
      * @returns CartesianCoordinate
      */
-    transformIntoCanvasCoordinate(canvasRect: Rectangle) {
+    transformIntoCanvasCoordinate(canvasRect: Rectangle): CartesianCoordinate {
         let originX = Math.round(canvasRect.width / 2);
         let originY = Math.round(canvasRect.height / 2);
 
         return new CartesianCoordinate(this.x + originX, this.y + originY);
     }
 
-    isSame(point: CartesianCoordinate) {
-        return this.x === point.x && this.y === point.y;
+    isSame(point: CartesianCoordinate): boolean {
+        return Math.abs(this.x - point.x) <= MINIMUM_ACCEPTABLE_DIFFERENCE
+            && Math.abs(this.y - point.y) <= MINIMUM_ACCEPTABLE_DIFFERENCE;
+    }
+
+    distanceTo(point: CartesianCoordinate): number {
+        return ((this.x + point.x) ** 2 + (this.y + point.y) ** 2) ** 0.5;
     }
 }

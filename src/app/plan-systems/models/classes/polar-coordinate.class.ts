@@ -1,3 +1,6 @@
+import { MINIMUM_ACCEPTABLE_DIFFERENCE } from "../../constants/constants.constant";
+import { Coordinate } from "../interfaces/coordinate.interface";
+import { Angle } from "./angle.class";
 import { CartesianCoordinate } from "./cartesian-coordinate.class";
 
 /**
@@ -11,7 +14,7 @@ import { CartesianCoordinate } from "./cartesian-coordinate.class";
      * @param angle 
      * @param degre: boolean (optionnal = true) If false, angle is in radians. 
      */
-export class PolarCoordinate {
+export class PolarCoordinate implements Coordinate<PolarCoordinate> {
 
     /**
      * 
@@ -20,7 +23,7 @@ export class PolarCoordinate {
      * @param degree 
      */
     constructor(public radius: number, public angle: number, degree = true) {
-        if (degree) this.angle = angle * Math.PI / 180;
+        if (degree) this.angle = Angle.convertDegreesToRadians(angle);
     }
 
     toCartesian(): CartesianCoordinate {
@@ -31,6 +34,15 @@ export class PolarCoordinate {
     }
 
     isSame(point: PolarCoordinate) {
-        return this.angle == point.angle && this.radius == point.radius;
+        return Math.abs(this.radius - point.radius) <= MINIMUM_ACCEPTABLE_DIFFERENCE
+            && Math.abs(this.angle - point.angle) <= MINIMUM_ACCEPTABLE_DIFFERENCE;
+    }
+
+    distanceTo(point: PolarCoordinate): number {
+        return Math.sqrt(
+            this.radius ** 2
+            + point.radius ** 2
+            - 2 * this.radius * point.radius * Math.cos(this.angle - point.angle)
+        );
     }
 }

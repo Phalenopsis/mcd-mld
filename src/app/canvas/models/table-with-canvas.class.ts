@@ -1,6 +1,6 @@
 import { McdTable } from "../../domain/mcd/models/mcd-table.class";
-import { CartesianCoordinate } from "../../plan-systems/models/cartesian-coordinate.class";
-import { Rectangle } from "../../plan-systems/models/rectangle.class";
+import { CartesianCoordinate } from "../../plan-systems/models/classes/cartesian-coordinate.class";
+import { Rectangle } from "../../plan-systems/models/classes/rectangle.class";
 
 export class TableWithCanvas {
     declare position: CartesianCoordinate;
