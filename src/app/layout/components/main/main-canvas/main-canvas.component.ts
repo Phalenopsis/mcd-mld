@@ -56,7 +56,7 @@ export class MainCanvasComponent implements OnInit, AfterViewInit {
 
   #drawRectangle(ctx: CanvasRenderingContext2D, position: CartesianCoordinate, rectangle: Rectangle, color: string = "black") {
     ctx.fillStyle = color;
-    ctx.fillRect(position.x, position.y, rectangle.width, rectangle.height);
+    ctx.fillRect(position.getX(), position.getY(), rectangle.width, rectangle.height);
   }
   // ancienne version
   // #drawTables() {
@@ -201,7 +201,7 @@ export class MainCanvasComponent implements OnInit, AfterViewInit {
         if (i % 4 == 0 || i % 4 == 3) {
           console.log("hop")
           const pointInCanvas = points[i];
-          this.context.fillRect(pointInCanvas.x, pointInCanvas.y, pointSize, pointSize);
+          this.context.fillRect(pointInCanvas.getX(), pointInCanvas.getY(), pointSize, pointSize);
         }
       }
     } else {
@@ -227,7 +227,7 @@ export class MainCanvasComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < points.length; i += 1) {
         if (choosenTables.includes(i)) {
           const pointInCanvas = points[i];
-          this.context.fillRect(pointInCanvas.x, pointInCanvas.y, pointSize, pointSize);
+          this.context.fillRect(pointInCanvas.getX(), pointInCanvas.getY(), pointSize, pointSize);
         }
       }
 

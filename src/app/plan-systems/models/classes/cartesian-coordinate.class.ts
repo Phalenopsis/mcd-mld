@@ -5,9 +5,17 @@ import { Coordinate } from "../interfaces/coordinate.interface";
 
 export class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
     constructor(
-        public x: number,
-        public y: number
+        private x: number,
+        private y: number
     ) { }
+
+    getX(): number {
+        return this.x;
+    }
+
+    getY(): number {
+        return this.y;
+    }
 
     toPolar(): PolarCoordinate {
         let radius = (this.x ** 2 + this.y ** 2) ** 0.5;

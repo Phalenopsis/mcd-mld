@@ -18,7 +18,7 @@ describe('ArchimedeanSpiral', () => {
     })
 
     it('9th point should be (+n, 0)', () => {
-        expect(spiral.getCartesianPoints()[8].y).toBeLessThan(MINIMUM_ACCEPTABLE_DIFFERENCE);
+        expect(spiral.getCartesianPoints()[8].getY()).toBeLessThan(MINIMUM_ACCEPTABLE_DIFFERENCE);
     })
 
     it('13th point should be (-300, 0)', () => {
