@@ -1,0 +1,22 @@
+<form [formGroup]="tableForm" (ngSubmit)="onSubmit()">
+    <fieldset>
+        <label for="tableName">Nom de la table</label>
+        <input type="text" id="tableName" formControlName="tableName">
+    </fieldset>
+    <fieldset formArrayName="tableAttributes">
+        <legend>Champs de la table</legend>
+        <button type="button" (click)="addTableAttributes()">Ajouter un champ</button>
+        <fieldset *ngFor="let attribute of attributes.controls; let i = index" [formGroupName]="i">
+            <div>
+                <label for="attribute-{{i}}">Champ</label>
+                <input type="text" name="attribute-{{i}}" id="attribute-{{i}}" formControlName="attributeName" appFocus>
+            </div>
+            <button type="button" (click)="removeTableAttribute(i)" aria-label="Supprimer le champ">
+                -
+                <span class="info">Supprimer le champ</span>
+            </button>
+        </fieldset>
+        
+    </fieldset>
+    <button type="submit" [disabled]="tableForm.invalid">Enregistrer la table</button>
+</form>

@@ -1,0 +1,105 @@
+@if($tables != undefined) {
+    <form [formGroup]="linkForm" (ngSubmit)="onSubmit()">
+        <fieldset formGroupName="tables">
+            <legend>Tables liées</legend>
+            <label for="table1">Table 1</label>
+            <select name="table1" formControlName="table1">
+                <option value="">--Choisissez une table--</option>
+                @for (table of ($tableNames | async); track $index) {
+                    <option value="{{table}}">{{table}}</option>
+                }
+            </select>
+            @if (linkForm.get('tables.table1')?.invalid && linkForm.touched) {
+                <ul class="error">
+                    @if(linkForm.get('tables.tables')?.get('table1')?.errors?.['required']) {
+                        <li>La table 1 est requise.</li>
+                    }
+                    @if(linkForm.get('tables.table1')?.errors?.['tableIsKnown']){
+                        <li>La table 1 doit exister.</li>
+                    }
+                </ul>
+            }
+            <label for="table2">Table 2</label>
+            <select name="table2" formControlName="table2">
+                <option value="">--Choisissez une table--</option>
+                @for (table of ($tableNames | async); track $index) {
+                    <option value="{{table}}">{{table}}</option>
+                }
+            </select>
+            @if (linkForm.get('tables.table2')?.invalid && linkForm.touched) {
+                <ul class="error">
+                    @if(linkForm.get('tables.table2')?.errors?.['required']) {
+                        <li>La table 2 est requise.</li>
+                    }
+                    @if(linkForm.get('tables.table2')?.errors?.['tableIsKnown']){
+                        <li>La table 2 doit exister.</li>
+                    }
+                </ul>
+            }
+            @if(linkForm.get('tables')?.invalid && linkForm.touched) {
+                <ul class="error">
+                    @if(linkForm.get('tables')?.errors?.['namesMatch']) {
+                        <li>Les tables doivent être différentes.</li>
+                    }
+                </ul>
+            }
+        </fieldset>
+        @if ((linkForm.get('tables')?.valid)) {
+            <fieldset>
+                <legend>Verbe de lien</legend>
+                <label for="action">Action</label>
+                <input type="text" name="action" id="action" formControlName="action">
+                @if(linkForm.get('action')?.invalid && linkForm.touched) {
+                    <ul class="error">
+                        @if(linkForm.get('action')?.errors?.['required']) {
+                            <li>L'action est requise.</li>
+                        }
+                    </ul>
+                }
+            </fieldset>
+
+        }
+
+        @if ((linkForm.get('tables')?.valid) && linkForm.get('action')?.valid) {
+            <fieldset>
+                <legend>Type de relation</legend>
+                <ul>
+                    @for (relation of relationTypeList; track $index) {
+                        <li>
+                            <input [id]="relation" type="radio" [value]="relation" formControlName="relationType"> 
+                            <label [for]="relation">{{relation}}</label>
+                        </li>
+                    }
+                </ul>
+                @if(linkForm.get('relationType')?.invalid && linkForm.touched) {
+                    <ul class="error">
+                        @if(linkForm.get('relationType')?.errors?.['required']) {
+                            <li>Un type de relation est requis.</li>
+                        }
+                    </ul>
+                }
+                @if(linkForm.get('relationType')?.valid) {
+                    <div>
+                        <strong>
+                            @if(linkForm.get('relationType')?.value === 'OneToOne') {
+                                Un(e) {{linkForm.get('tables.table1')?.value}} {{linkForm.get('action')?.value}} un(e) {{linkForm.get('tables.table2')?.value}}
+                            }
+                            @if(linkForm.get('relationType')?.value === 'OneToMany') {
+                                Un(e) {{linkForm.get('tables.table1')?.value}} {{linkForm.get('action')?.value}} plusieurs {{linkForm.get('tables.table2')?.value}}
+                            }
+                            @if(linkForm.get('relationType')?.value === 'ManyToOne') {
+                                Plusieurs {{linkForm.get('tables.table1')?.value}} {{linkForm.get('action')?.value}} un(e) {{linkForm.get('tables.table2')?.value}}
+                            }
+                            @if(linkForm.get('relationType')?.value === 'ManyToMany') {
+                                Des {{linkForm.get('tables.table1')?.value}} {{linkForm.get('action')?.value}} des {{linkForm.get('tables.table2')?.value}}
+                                et des {{linkForm.get('tables.table2')?.value}} sont {{linkForm.get('action')?.value}} par plusieurs {{linkForm.get('tables.table1')?.value}}
+                            }
+                        </strong>
+                    </div>
+                }
+            </fieldset>
+        }
+        <button type="submit">Submit</button>
+    </form>
+    
+}

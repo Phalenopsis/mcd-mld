@@ -1,0 +1,9 @@
+article {
+    border: 2px solid black;
+    padding: 1rem;
+    margin: 1rem;
+
+    ul {
+        list-style: none;
+    }
+}

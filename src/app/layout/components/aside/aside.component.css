@@ -1,0 +1,43 @@
+aside {
+    width: var(--aside-width);
+    background-color: var(--aside-bgcolor);
+    height: 100vh;
+    padding-top: 4px;
+    border: 2px outset grey;
+    background-color: lightgrey;
+}
+nav {
+    background-color: lightgray;
+    padding-bottom: 1rem;
+    
+    ul {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        justify-content: space-around;
+
+        li {
+            width: 100%;
+            
+            button {
+                width: 100%;
+                padding: 8px;
+                background-color: darkgray;
+                border: 2px outset grey;
+                border-bottom: none;
+
+                &.active {
+                    background-color: lightgray;
+                }   
+            }
+
+            &:first-of-type button {
+                border-left: none;
+            }
+
+            &:last-of-type button {
+                border-right: none;
+            }
+        }
+    }
+}

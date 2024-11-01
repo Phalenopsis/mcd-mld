@@ -1,0 +1,4 @@
+div#mainFrame {
+    width: var(--main-width);
+    height: var(--main-height);
+}

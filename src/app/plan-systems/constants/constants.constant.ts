@@ -1,0 +1,1 @@
+export const MINIMUM_ACCEPTABLE_DIFFERENCE = 0.1;

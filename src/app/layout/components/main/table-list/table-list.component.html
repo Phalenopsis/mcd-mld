@@ -1,0 +1,5 @@
+<section>
+    @for (table of ($tables | async); track $index) {
+        <app-table-card [table]="table"></app-table-card>
+    }
+</section>

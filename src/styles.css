@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    /* aside */
+    --aside-bgcolor: none;
+    --aside-width: 20vw;
+    
+    /* header */
+    --header-bgcolor: azure;
+    --header-width: 80vw;
+    --header-height: 4rem;
+
+    /* main */
+    --main-bgcolor: lightgreen;
+    --main-width: var(--footer-width);
+    --main-height: calc(100vh - calc(var(--footer-height) + var(--header-height)));
+    /* footer */
+    --footer-bgcolor: none;
+    --footer-width: var(--header-width);
+    --footer-height: 2rem;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
