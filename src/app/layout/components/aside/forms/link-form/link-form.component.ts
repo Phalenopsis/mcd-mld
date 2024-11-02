@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-table.service';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { map, Observable, switchMap, take, tap } from 'rxjs';
+import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { map, Observable, take, tap } from 'rxjs';
 import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { AsyncPipe } from '@angular/common';
 import { RelationType } from '../../../../../domain/models/relation-type.enum';
@@ -17,7 +17,7 @@ import { McdLink } from '../../../../../domain/mcd/models/mcd-link.class';
 export class LinkFormComponent implements OnInit {
   tableService: McdTableService = inject(McdTableService);
 
-  formBuilder = inject(FormBuilder);
+  formBuilder = inject(NonNullableFormBuilder);
 
   declare $tableNames: Observable<string[]>;
   declare $tables: Observable<McdTable[]>;
@@ -43,12 +43,13 @@ export class LinkFormComponent implements OnInit {
 
   onSubmit() {
     if (this.linkForm.valid) {
+      const form = this.linkForm.getRawValue();
       let table1: McdTable;
       let table2: McdTable;
       this.$tables.pipe(
         tap((tables: McdTable[]) => {
-          table1 = tables.filter(table => table.name === (this.linkForm.value.tables?.table1 as string)).shift() as McdTable;
-          table2 = tables.filter(table => table.name === (this.linkForm.value.tables?.table2 as string)).shift() as McdTable;
+          table1 = tables.filter(table => table.name === form.tables.table1).shift() as McdTable;
+          table2 = tables.filter(table => table.name === form.tables.table2).shift() as McdTable;
         }),
         take(1)
       ).subscribe(
