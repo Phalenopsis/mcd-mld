@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-table.service';
-import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { map, Observable, take, tap } from 'rxjs';
+import { AbstractControl, AsyncValidatorFn, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { map, Observable, switchMap, take, tap, timer } from 'rxjs';
 import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { AsyncPipe } from '@angular/common';
 import { RelationType } from '../../../../../domain/models/relation-type.enum';
@@ -26,7 +26,11 @@ export class LinkFormComponent implements OnInit {
 
   linkForm = this.formBuilder.group({
     tables: this.formBuilder.group({
-      table1: ['', [Validators.required, this.tableIsKnownValidator()]],
+      table1: ['', {
+        validators: [Validators.required],
+        asyncValidators: [this.asyncTableIsKnownValidator()],
+        updateOn: 'change'
+      }],
       table2: ['', [Validators.required, this.tableIsKnownValidator()]],
     }, { validators: this.tablesAreDifferentsValidator() }),
 
@@ -81,6 +85,23 @@ export class LinkFormComponent implements OnInit {
         tables => tablesName = tables
       )
       return tablesName.includes(control.value) ? null : { tableIsKnown: true };
+    }
+  }
+
+  asyncTableIsKnownValidator(): AsyncValidatorFn {
+    return (control) => {
+      return timer(300).pipe(
+        switchMap(() =>
+          this.tableService.$exists(control.value).pipe(exists => exists)
+        ),
+        map(exists => {
+          if (exists) {
+            console.log("good");
+            return null;
+          }
+          console.log("erreor");
+          return { tableIsKnown: true }
+        }))
     }
   }
 

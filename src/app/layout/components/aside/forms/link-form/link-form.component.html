@@ -5,6 +5,7 @@
             <label for="table1">Table 1</label>
             <select name="table1" formControlName="table1">
                 <option value="">--Choisissez une table--</option>
+                <option value="bob">bob</option>
                 @for (table of ($tableNames | async); track $index) {
                     <option value="{{table}}">{{table}}</option>
                 }
@@ -44,6 +45,10 @@
                 </ul>
             }
         </fieldset>
+        @if (!linkForm.get('tables')?.valid) {
+            <li>arg</li>
+        }
+
         @if ((linkForm.get('tables')?.valid)) {
             <fieldset>
                 <legend>Verbe de lien</legend>
