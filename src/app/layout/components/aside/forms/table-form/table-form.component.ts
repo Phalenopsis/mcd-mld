@@ -28,7 +28,7 @@ export class TableFormComponent {
 
   addTableAttributes(): void {
     const attributesGroup = this.formBuilder.group({
-      attributeName: ['']
+      attributeName: ['', [Validators.required]]
     });
     this.attributes.push(attributesGroup);
   }
