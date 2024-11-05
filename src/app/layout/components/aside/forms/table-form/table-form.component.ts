@@ -38,15 +38,11 @@ export class TableFormComponent {
   }
 
   onSubmit(): void {
-    if (this.tableForm.valid) {
-      console.log("ok")
-      const table: McdTable = new McdTable(
-        this.tableForm.value.tableName as string,
-        (this.tableForm.value.tableAttributes as McdTableAttribute[])
-          .map((attribute: Attribute) => attribute.attributeName));
-      this.tableService.addTable(table);
-    } else {
-      console.log("Formulaire invalide");
-    }
+    const table: McdTable = new McdTable(
+      this.tableForm.value.tableName as string,
+      (this.tableForm.value.tableAttributes as McdTableAttribute[])
+        .map((attribute: Attribute) => attribute.attributeName));
+    this.tableService.addTable(table);
+
   }
 }
