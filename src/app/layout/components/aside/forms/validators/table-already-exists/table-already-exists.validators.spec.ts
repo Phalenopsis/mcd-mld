@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TableAlreadyExistsValidator } from './table-already-exists.validator';
-import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-table.service';
+import { McdTableService } from '../../../../../../domain/mcd/services/table/mcd-table.service';
 import { of } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
@@ -27,7 +27,6 @@ describe('TableAlreadyExistsValidator - no error', () => {
             exists => {
                 result = exists;
                 expect(result).toBeFalsy();
-                console.log(result);
                 done();
             }
         )
@@ -52,7 +51,6 @@ describe('TableAlreadyExistsValidator - has error', () => {
         tableValidator.validate(formControl).pipe().subscribe(
             exists => {
                 expect(exists).toBeTruthy();
-                console.log(exists);
                 if (exists) expect(exists['tableExists']).toBeTrue();
                 done();
             }

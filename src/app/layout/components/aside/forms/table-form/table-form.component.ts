@@ -5,7 +5,7 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { McdTableAttribute } from '../../../../../domain/mcd/models/mcd-table-attribute.type';
 import { FocusDirective } from '../../../../directives/focus.directive';
-import { TableAlreadyExistsValidator } from '../validators/table-already-exists.validator';
+import { TableAlreadyExistsValidator } from '../validators/table-already-exists/table-already-exists.validator';
 
 @Component({
   selector: 'app-table-form',

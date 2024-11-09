@@ -6,7 +6,7 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { TableAlreadyExistsValidator } from '../validators/table-already-exists.validator';
+import { TableAlreadyExistsValidator } from '../validators/table-already-exists/table-already-exists.validator';
 
 describe('TableFormComponent - with async TableValidator ok', () => {
   let component: TableFormComponent;
@@ -104,7 +104,6 @@ describe('TableFormComponent - with async TableValidator ok', () => {
         tableNameInput.dispatchEvent(new Event('input'));
         addAttributeButton.click();
         attributeInput1 = fixture.debugElement.query(By.css('#attribute-0')).nativeElement;
-
       });
 
       it('should take focus when attribute field appear', async () => {
@@ -112,7 +111,6 @@ describe('TableFormComponent - with async TableValidator ok', () => {
           focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
           expect(focusElement).toBe(attributeInput1);
         }
-
       });
 
       it('should change focus when another attribute field appear', () => {
@@ -122,7 +120,6 @@ describe('TableFormComponent - with async TableValidator ok', () => {
           focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
           expect(focusElement).toBe(attributeInput2);
         }
-
       });
 
       describe('can I submit ?', () => {
@@ -153,7 +150,6 @@ describe('TableFormComponent - with async TableValidator ok', () => {
 
               attributeInput2.value = 'email';
               attributeInput2.dispatchEvent(new Event('input'));
-
             });
 
             it('should be able to submit if second attribute is filled', () => {

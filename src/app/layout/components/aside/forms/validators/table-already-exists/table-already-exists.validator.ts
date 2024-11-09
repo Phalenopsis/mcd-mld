@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { AbstractControl, AsyncValidator, ValidationErrors } from "@angular/forms";
-import { McdTableService } from "../../../../../domain/mcd/services/table/mcd-table.service";
+import { McdTableService } from "../../../../../../domain/mcd/services/table/mcd-table.service";
 import { catchError, first, map, Observable, of, switchMap, take } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
