@@ -2,6 +2,12 @@
     <fieldset>
         <label for="tableName">Nom de la table</label>
         <input type="text" id="tableName" formControlName="tableName">
+        @if (tableForm.controls.tableName.invalid) {
+            <ul class="error">
+                <li>Le nom de la table existe déjà</li>
+            </ul>
+        }
+
     </fieldset>
     <fieldset id="tableAttributes" formArrayName="tableAttributes">
         <legend>Champs de la table</legend>
