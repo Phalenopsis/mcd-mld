@@ -6,7 +6,7 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { TableAlreadyExistsValidator } from '../validators/table-already-exists/table-already-exists.validator';
+import { TableExistsValidator } from '../validators/table-exists/table-exists.validator';
 
 describe('TableFormComponent - with async TableValidator ok', () => {
   let component: TableFormComponent;
@@ -16,14 +16,14 @@ describe('TableFormComponent - with async TableValidator ok', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TableFormComponent],
-      providers: [McdTableService, TableAlreadyExistsValidator]
+      providers: [McdTableService, TableExistsValidator]
     })
       .compileComponents();
 
     const tableService = TestBed.inject(McdTableService);
     spyOn(tableService, '$getTableList').and.returnValue(of(tables));
 
-    const tableValidator = TestBed.inject(TableAlreadyExistsValidator);
+    const tableValidator = TestBed.inject(TableExistsValidator);
     spyOn(tableValidator, 'validate').and.returnValue(of(null));
 
     fixture = TestBed.createComponent(TableFormComponent);
@@ -122,6 +122,14 @@ describe('TableFormComponent - with async TableValidator ok', () => {
         }
       });
 
+      it('should be invalid if attribute name is blank', async () => {
+        addAttributeButton.click();
+        await fixture.whenStable();
+        expect(component.tableForm.invalid).toBeTruthy();
+        expect(component.tableForm.controls.tableAttributes.invalid).toBeTruthy();
+        expect(component.tableForm.controls.tableAttributes.controls[0].invalid).toBeTruthy();
+      });
+
       describe('can I submit ?', () => {
         beforeEach(() => {
           attributeInput1.value = 'name';
@@ -143,6 +151,31 @@ describe('TableFormComponent - with async TableValidator ok', () => {
           it('should not be able to submit if second attribute is blank', () => {
             expect(submitButton.disabled).toBeTruthy();
           });
+
+          describe('arg', () => {
+            let errorDebugElement: DebugElement;
+            beforeEach(async () => {
+              attributeInput2.value = 'name';
+              attributeInput2.dispatchEvent(new Event('input'));
+              await fixture.whenStable();
+              errorDebugElement = fixture.debugElement.query(By.css("#li-error-exists-1"));
+            })
+
+            it('should be an error if second attribute is same than first', () => {
+              const errorElement = errorDebugElement.nativeElement;
+
+              expect(component.tableForm.invalid).toBeTruthy();
+              expect(component.tableForm.controls.tableAttributes.invalid).toBeTruthy();
+              expect(component.tableForm.controls.tableAttributes.controls[1].invalid).toBeTruthy();
+              expect(attributeInput2.parentNode).toBeTruthy();
+              expect(attributeInput2.parentNode?.lastChild).toBeTruthy();
+              expect(errorElement.textContent).toContain(`L'attribut name existe déjà`)
+              //expect(attributeInput2.parentNode?.lastChild?.lastChild?.textContent).toContain(`L'attribut name existe déjà`)
+
+            })
+          })
+
+
 
           describe('if the second attribute is filled', () => {
             beforeEach(() => {
@@ -177,14 +210,14 @@ describe('TableFormComponent - with async TableValidator ok', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TableFormComponent],
-      providers: [McdTableService, TableAlreadyExistsValidator]
+      providers: [McdTableService, TableExistsValidator]
     })
       .compileComponents();
 
     const tableService = TestBed.inject(McdTableService);
     spyOn(tableService, '$getTableList').and.returnValue(of(tables));
 
-    const tableValidator = TestBed.inject(TableAlreadyExistsValidator);
+    const tableValidator = TestBed.inject(TableExistsValidator);
     spyOn(tableValidator, 'validate').and.returnValue(of({ tableExists: true }));
 
     fixture = TestBed.createComponent(TableFormComponent);
