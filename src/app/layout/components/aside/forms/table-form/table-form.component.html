@@ -2,16 +2,22 @@
     <fieldset>
         <label for="tableName">Nom de la table</label>
         <input type="text" id="tableName" formControlName="tableName">
+        @if (tableForm.controls.tableName.invalid) {
+            <ul class="error">
+                <li>Le nom de la table existe déjà</li>
+            </ul>
+        }
+
     </fieldset>
-    <fieldset formArrayName="tableAttributes">
+    <fieldset id="tableAttributes" formArrayName="tableAttributes">
         <legend>Champs de la table</legend>
-        <button type="button" (click)="addTableAttributes()">Ajouter un champ</button>
+        <button type="button" (click)="addTableAttributes()" id="addAttribute">Ajouter un champ</button>
         <fieldset *ngFor="let attribute of attributes.controls; let i = index" [formGroupName]="i">
             <div>
                 <label for="attribute-{{i}}">Champ</label>
                 <input type="text" name="attribute-{{i}}" id="attribute-{{i}}" formControlName="attributeName" appFocus>
             </div>
-            <button type="button" (click)="removeTableAttribute(i)" aria-label="Supprimer le champ">
+            <button type="button" (click)="removeTableAttribute(i)" aria-label="Supprimer le champ" class="deleteFieldButton">
                 -
                 <span class="info">Supprimer le champ</span>
             </button>

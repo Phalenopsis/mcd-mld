@@ -3,7 +3,7 @@
         <fieldset formGroupName="tables">
             <legend>Tables liées</legend>
             <label for="table1">Table 1</label>
-            <select name="table1" formControlName="table1">
+            <select name="table1" formControlName="table1" id="table1">
                 <option value="">--Choisissez une table--</option>
                 @for (table of ($tableNames | async); track $index) {
                     <option value="{{table}}">{{table}}</option>
@@ -20,7 +20,7 @@
                 </ul>
             }
             <label for="table2">Table 2</label>
-            <select name="table2" formControlName="table2">
+            <select name="table2" formControlName="table2" id="table2">
                 <option value="">--Choisissez une table--</option>
                 @for (table of ($tableNames | async); track $index) {
                     <option value="{{table}}">{{table}}</option>
@@ -79,7 +79,7 @@
                     </ul>
                 }
                 @if(linkForm.get('relationType')?.valid) {
-                    <div>
+                    <div id="relationTypeResult">
                         <strong>
                             @if(linkForm.get('relationType')?.value === 'OneToOne') {
                                 Un(e) {{linkForm.get('tables.table1')?.value}} {{linkForm.get('action')?.value}} un(e) {{linkForm.get('tables.table2')?.value}}
@@ -99,7 +99,7 @@
                 }
             </fieldset>
         }
-        <button type="submit">Submit</button>
+        <button type="submit" [disabled]="linkForm.invalid">Submit</button>
     </form>
     
 }

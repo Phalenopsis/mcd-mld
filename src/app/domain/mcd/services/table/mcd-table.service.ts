@@ -31,4 +31,10 @@ export class McdTableService {
       map((tables: McdTable[]) => tables.filter(table => table.name === name).shift() as McdTable)
     );
   }
+
+  $exists(name: string): Observable<boolean> {
+    return this.$tableList.pipe(
+      map((tables: McdTable[]) => tables.some((table) => table.name === name))
+    )
+  }
 }
