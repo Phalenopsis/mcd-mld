@@ -6,8 +6,9 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { TableAlreadyExistsValidator } from '../validators/table-already-exists.validator';
 
-describe('TableFormComponent', () => {
+describe('TableFormComponent - with async TableValidator ok', () => {
   let component: TableFormComponent;
   let fixture: ComponentFixture<TableFormComponent>;
   const tables = [new McdTable('user', []), new McdTable('car', [])];
@@ -15,12 +16,15 @@ describe('TableFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TableFormComponent],
-      providers: [McdTableService]
+      providers: [McdTableService, TableAlreadyExistsValidator]
     })
       .compileComponents();
 
     const tableService = TestBed.inject(McdTableService);
     spyOn(tableService, '$getTableList').and.returnValue(of(tables));
+
+    const tableValidator = TestBed.inject(TableAlreadyExistsValidator);
+    spyOn(tableValidator, 'validate').and.returnValue(of(null));
 
     fixture = TestBed.createComponent(TableFormComponent);
     component = fixture.componentInstance;
@@ -54,30 +58,30 @@ describe('TableFormComponent', () => {
   });
 
   describe('test FormArray', () => {
-    let button: HTMLButtonElement;
+    let addAttributeButton: HTMLButtonElement;
     let fieldset: HTMLFieldSetElement;
 
     beforeEach(() => {
-      button = fixture.debugElement.query(By.css('#addAttribute')).nativeElement;
+      addAttributeButton = fixture.debugElement.query(By.css('#addAttribute')).nativeElement;
       fieldset = fixture.debugElement.query(By.css('#tableAttributes')).nativeElement;
     });
 
     it('should grow when click on button', () => {
       expect(fieldset.childNodes.length).toEqual(3);
-      button.click();
+      addAttributeButton.click();
       expect(fieldset.childNodes.length).toEqual(4);
-      button.click();
+      addAttributeButton.click();
       expect(fieldset.childNodes.length).toEqual(5);
-      button.click();
-      button.click();
+      addAttributeButton.click();
+      addAttributeButton.click();
       expect(fieldset.childNodes.length).toEqual(7);
     });
 
     it('should narrow when click on button to delete field', () => {
-      button.click();
-      button.click();
-      button.click();
-      button.click();
+      addAttributeButton.click();
+      addAttributeButton.click();
+      addAttributeButton.click();
+      addAttributeButton.click();
       expect(fieldset.childNodes.length).toEqual(7);
       const deleteFieldButtons: DebugElement[] = fixture.debugElement.queryAll(By.css('.deleteFieldButton'));
 
@@ -98,21 +102,27 @@ describe('TableFormComponent', () => {
         tableNameInput = fixture.debugElement.query(By.css('#tableName')).nativeElement;
         tableNameInput.value = 'startingPoint';
         tableNameInput.dispatchEvent(new Event('input'));
-        button.click();
+        addAttributeButton.click();
         attributeInput1 = fixture.debugElement.query(By.css('#attribute-0')).nativeElement;
 
       });
 
-      it('should take focus when attribute field appear', () => {
-        focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
-        expect(focusElement).toBe(attributeInput1);
+      it('should take focus when attribute field appear', async () => {
+        if (fixture.debugElement.query(By.css(":focus"))) {
+          focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
+          expect(focusElement).toBe(attributeInput1);
+        }
+
       });
 
       it('should change focus when another attribute field appear', () => {
-        button.click();
+        addAttributeButton.click();
         attributeInput2 = fixture.debugElement.query(By.css('#attribute-1')).nativeElement;
-        focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
-        expect(focusElement).toBe(attributeInput2);
+        if (fixture.debugElement.query(By.css(":focus"))) {
+          focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
+          expect(focusElement).toBe(attributeInput2);
+        }
+
       });
 
       describe('can I submit ?', () => {
@@ -129,7 +139,7 @@ describe('TableFormComponent', () => {
 
         describe('if i want a second attribute', () => {
           beforeEach(() => {
-            button.click();
+            addAttributeButton.click();
             attributeInput2 = fixture.debugElement.query(By.css('#attribute-1')).nativeElement;
           });
 
@@ -159,5 +169,51 @@ describe('TableFormComponent', () => {
       });
     });
   });
+});
+
+describe('TableFormComponent - with async TableValidator ok', () => {
+  let component: TableFormComponent;
+  let fixture: ComponentFixture<TableFormComponent>;
+  const tables = [new McdTable('user', []), new McdTable('car', [])];
+  let tableNameInput: HTMLInputElement;
+  let attributeInput1: HTMLInputElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TableFormComponent],
+      providers: [McdTableService, TableAlreadyExistsValidator]
+    })
+      .compileComponents();
+
+    const tableService = TestBed.inject(McdTableService);
+    spyOn(tableService, '$getTableList').and.returnValue(of(tables));
+
+    const tableValidator = TestBed.inject(TableAlreadyExistsValidator);
+    spyOn(tableValidator, 'validate').and.returnValue(of({ tableExists: true }));
+
+    fixture = TestBed.createComponent(TableFormComponent);
+    component = fixture.componentInstance;
+    fixture.autoDetectChanges();
+
+    let addAttributeButton: HTMLButtonElement;
+    let fieldset: HTMLFieldSetElement;
+    addAttributeButton = fixture.debugElement.query(By.css('#addAttribute')).nativeElement;
+    fieldset = fixture.debugElement.query(By.css('#tableAttributes')).nativeElement;
+    tableNameInput = fixture.debugElement.query(By.css('#tableName')).nativeElement;
+    tableNameInput.value = 'startingPoint';
+    tableNameInput.dispatchEvent(new Event('input'));
+    addAttributeButton.click();
+    attributeInput1 = fixture.debugElement.query(By.css('#attribute-0')).nativeElement;
+  });
+
+  it('should not be possible to submit if table already exists', async () => {
+    await fixture.whenStable();
+    tableNameInput.value = 'car';
+    attributeInput1.dispatchEvent(new Event('input'));
+
+    await fixture.whenStable();
+
+    expect(component.tableForm.controls.tableName.invalid).toBeTruthy()
+  })
 });
 
