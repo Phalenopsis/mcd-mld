@@ -20,7 +20,6 @@ describe('LinkFormComponent', () => {
     })
       .compileComponents();
 
-
     const tableService = TestBed.inject(McdTableService);
     spyOn(tableService, '$getTableList').and.returnValue(of(tables));
 
@@ -107,5 +106,35 @@ describe('LinkFormComponent', () => {
     expect(relationTypeResultElement.textContent).toContain(tables[0].name);
     expect(relationTypeResultElement.textContent).toContain(tables[1].name);
     expect(relationTypeResultElement.textContent).toContain('drive');
+  });
+
+  it('should test RelationType radio button', async () => {
+    let buttonDebug: HTMLButtonElement = fixture.debugElement.query(By.css('button[type=submit]')).nativeElement;
+    expect(buttonDebug.disabled).toBeTruthy();
+
+    table1Select.value = table1Select.options[1].value;
+    table1Select.dispatchEvent(new Event('change'));
+    const table2Select: HTMLSelectElement = fixture.debugElement.query(By.css('#table2')).nativeElement;
+    table2Select.value = table2Select.options[2].value;
+    table2Select.dispatchEvent(new Event('change'));
+    const actionDebugElement = fixture.debugElement.query(By.css('#action'));
+    const actionElement: HTMLInputElement = actionDebugElement.nativeElement;
+    actionElement.value = 'drive';
+    actionElement.dispatchEvent(new Event('input'));
+
+    const radiosDebug = fixture.debugElement.queryAll(By.css('input[type=radio]'));
+    let secondOption: HTMLInputElement = radiosDebug[1].nativeElement;
+    secondOption.checked = true;
+    secondOption.dispatchEvent(new Event('change'));
+
+    buttonDebug = fixture.debugElement.query(By.css('button[type=submit]')).nativeElement;
+    expect(buttonDebug.disabled).toBeFalsy();
   })
 });
+
+/*
+Statements   : 46.41% ( 149/321 )
+Branches     : 48.07% ( 25/52 )
+Functions    : 55.05% ( 49/89 )
+Lines        : 44.89% ( 132/294 )
+*/

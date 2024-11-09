@@ -5,6 +5,7 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { McdTableAttribute } from '../../../../../domain/mcd/models/mcd-table-attribute.type';
 import { FocusDirective } from '../../../../directives/focus.directive';
+import { TableAlreadyExistsValidator } from '../validators/table-already-exists.validator';
 
 @Component({
   selector: 'app-table-form',
@@ -15,10 +16,11 @@ import { FocusDirective } from '../../../../directives/focus.directive';
 })
 export class TableFormComponent {
   tableService: McdTableService = inject(McdTableService);
+  tableValidator: TableAlreadyExistsValidator = inject(TableAlreadyExistsValidator);
 
   formBuilder = inject(FormBuilder);
   tableForm = this.formBuilder.group({
-    tableName: ['', [Validators.required]],
+    tableName: ['', [Validators.required], [this.tableValidator.validate.bind(this.tableValidator)], 'blur'],
     tableAttributes: this.formBuilder.array([])
   });
 
@@ -28,7 +30,7 @@ export class TableFormComponent {
 
   addTableAttributes(): void {
     const attributesGroup = this.formBuilder.group({
-      attributeName: ['']
+      attributeName: ['', [Validators.required]]
     });
     this.attributes.push(attributesGroup);
   }
@@ -38,15 +40,10 @@ export class TableFormComponent {
   }
 
   onSubmit(): void {
-    if (this.tableForm.valid) {
-      console.log("ok")
-      const table: McdTable = new McdTable(
-        this.tableForm.value.tableName as string,
-        (this.tableForm.value.tableAttributes as McdTableAttribute[])
-          .map((attribute: Attribute) => attribute.attributeName));
-      this.tableService.addTable(table);
-    } else {
-      console.log("Formulaire invalide");
-    }
+    const table: McdTable = new McdTable(
+      this.tableForm.value.tableName as string,
+      (this.tableForm.value.tableAttributes as McdTableAttribute[])
+        .map((attribute: Attribute) => attribute.attributeName));
+    this.tableService.addTable(table);
   }
 }
