@@ -5,7 +5,7 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { McdTableAttribute } from '../../../../../domain/mcd/models/mcd-table-attribute.type';
 import { FocusDirective } from '../../../../directives/focus.directive';
-import { TableExistsValidator } from '../validators/table-exists/table-exists.validator';
+import { TableAlreadyExistsValidator } from '../validators/table-already-exists/table-already-exists.validator';
 
 @Component({
   selector: 'app-table-form',
@@ -16,7 +16,7 @@ import { TableExistsValidator } from '../validators/table-exists/table-exists.va
 })
 export class TableFormComponent {
   tableService: McdTableService = inject(McdTableService);
-  tableValidator: TableExistsValidator = inject(TableExistsValidator);
+  tableValidator: TableAlreadyExistsValidator = inject(TableAlreadyExistsValidator);
 
   formBuilder = inject(FormBuilder);
   tableForm = this.formBuilder.group({

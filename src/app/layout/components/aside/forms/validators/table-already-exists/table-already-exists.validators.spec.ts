@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { TableExistsValidator } from './table-exists.validator';
+import { TableAlreadyExistsValidator } from './table-already-exists.validator';
 import { McdTableService } from '../../../../../../domain/mcd/services/table/mcd-table.service';
 import { of, throwError } from 'rxjs';
 import { FormControl } from '@angular/forms';
 
 describe('TableAlreadyExistsValidator - no error', () => {
-    let tableValidator: TableExistsValidator;
+    let tableValidator: TableAlreadyExistsValidator;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [McdTableService]
         });
-        tableValidator = TestBed.inject(TableExistsValidator);
+        tableValidator = TestBed.inject(TableAlreadyExistsValidator);
         const tableService = TestBed.inject(McdTableService);
         spyOn(tableService, '$exists').and.returnValue(of(false));
     });
@@ -35,13 +35,13 @@ describe('TableAlreadyExistsValidator - no error', () => {
 });
 
 describe('TableAlreadyExistsValidator - has error', () => {
-    let tableValidator: TableExistsValidator;
+    let tableValidator: TableAlreadyExistsValidator;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [McdTableService]
         });
-        tableValidator = TestBed.inject(TableExistsValidator);
+        tableValidator = TestBed.inject(TableAlreadyExistsValidator);
         const tableService = TestBed.inject(McdTableService);
         spyOn(tableService, '$exists').and.returnValue(of(true));
     });
@@ -60,13 +60,13 @@ describe('TableAlreadyExistsValidator - has error', () => {
 });
 
 describe('TableAlreadyExistsValidator - has error', () => {
-    let tableValidator: TableExistsValidator;
+    let tableValidator: TableAlreadyExistsValidator;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [McdTableService]
         });
-        tableValidator = TestBed.inject(TableExistsValidator);
+        tableValidator = TestBed.inject(TableAlreadyExistsValidator);
         const tableService = TestBed.inject(McdTableService);
         spyOn(tableService, '$exists').and.returnValue(throwError(() => new Error('something is wrong')));
     });

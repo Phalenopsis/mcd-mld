@@ -6,7 +6,7 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { TableExistsValidator } from '../validators/table-exists/table-exists.validator';
+import { TableAlreadyExistsValidator } from '../validators/table-already-exists/table-already-exists.validator';
 
 describe('TableFormComponent - with async TableValidator ok', () => {
   let component: TableFormComponent;
@@ -16,14 +16,14 @@ describe('TableFormComponent - with async TableValidator ok', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TableFormComponent],
-      providers: [McdTableService, TableExistsValidator]
+      providers: [McdTableService, TableAlreadyExistsValidator]
     })
       .compileComponents();
 
     const tableService = TestBed.inject(McdTableService);
     spyOn(tableService, '$getTableList').and.returnValue(of(tables));
 
-    const tableValidator = TestBed.inject(TableExistsValidator);
+    const tableValidator = TestBed.inject(TableAlreadyExistsValidator);
     spyOn(tableValidator, 'validate').and.returnValue(of(null));
 
     fixture = TestBed.createComponent(TableFormComponent);
@@ -210,14 +210,14 @@ describe('TableFormComponent - with async TableValidator ok', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TableFormComponent],
-      providers: [McdTableService, TableExistsValidator]
+      providers: [McdTableService, TableAlreadyExistsValidator]
     })
       .compileComponents();
 
     const tableService = TestBed.inject(McdTableService);
     spyOn(tableService, '$getTableList').and.returnValue(of(tables));
 
-    const tableValidator = TestBed.inject(TableExistsValidator);
+    const tableValidator = TestBed.inject(TableAlreadyExistsValidator);
     spyOn(tableValidator, 'validate').and.returnValue(of({ tableExists: true }));
 
     fixture = TestBed.createComponent(TableFormComponent);

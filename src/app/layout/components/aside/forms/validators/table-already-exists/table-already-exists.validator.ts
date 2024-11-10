@@ -4,7 +4,7 @@ import { McdTableService } from "../../../../../../domain/mcd/services/table/mcd
 import { catchError, first, map, Observable, of, switchMap, take } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
-export class TableExistsValidator implements AsyncValidator {
+export class TableAlreadyExistsValidator implements AsyncValidator {
     tableService: McdTableService = inject(McdTableService);
 
     validate(control: AbstractControl): Observable<ValidationErrors | null> {
