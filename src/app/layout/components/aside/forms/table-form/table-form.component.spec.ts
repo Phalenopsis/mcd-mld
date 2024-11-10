@@ -6,7 +6,7 @@ import { McdTableService } from '../../../../../domain/mcd/services/table/mcd-ta
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { TableAlreadyExistsValidator } from '../validators/table-already-exists.validator';
+import { TableAlreadyExistsValidator } from '../validators/table-already-exists/table-already-exists.validator';
 
 describe('TableFormComponent - with async TableValidator ok', () => {
   let component: TableFormComponent;
@@ -104,7 +104,6 @@ describe('TableFormComponent - with async TableValidator ok', () => {
         tableNameInput.dispatchEvent(new Event('input'));
         addAttributeButton.click();
         attributeInput1 = fixture.debugElement.query(By.css('#attribute-0')).nativeElement;
-
       });
 
       it('should take focus when attribute field appear', async () => {
@@ -112,7 +111,6 @@ describe('TableFormComponent - with async TableValidator ok', () => {
           focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
           expect(focusElement).toBe(attributeInput1);
         }
-
       });
 
       it('should change focus when another attribute field appear', () => {
@@ -122,7 +120,14 @@ describe('TableFormComponent - with async TableValidator ok', () => {
           focusElement = fixture.debugElement.query(By.css(":focus")).nativeElement;
           expect(focusElement).toBe(attributeInput2);
         }
+      });
 
+      it('should be invalid if attribute name is blank', async () => {
+        addAttributeButton.click();
+        await fixture.whenStable();
+        expect(component.tableForm.invalid).toBeTruthy();
+        expect(component.tableForm.controls.tableAttributes.invalid).toBeTruthy();
+        expect(component.tableForm.controls.tableAttributes.controls[0].invalid).toBeTruthy();
       });
 
       describe('can I submit ?', () => {
@@ -147,13 +152,37 @@ describe('TableFormComponent - with async TableValidator ok', () => {
             expect(submitButton.disabled).toBeTruthy();
           });
 
+          describe('arg', () => {
+            let errorDebugElement: DebugElement;
+            beforeEach(async () => {
+              attributeInput2.value = 'name';
+              attributeInput2.dispatchEvent(new Event('input'));
+              await fixture.whenStable();
+              errorDebugElement = fixture.debugElement.query(By.css("#li-error-exists-1"));
+            })
+
+            it('should be an error if second attribute is same than first', () => {
+              const errorElement = errorDebugElement.nativeElement;
+
+              expect(component.tableForm.invalid).toBeTruthy();
+              expect(component.tableForm.controls.tableAttributes.invalid).toBeTruthy();
+              expect(component.tableForm.controls.tableAttributes.controls[1].invalid).toBeTruthy();
+              expect(attributeInput2.parentNode).toBeTruthy();
+              expect(attributeInput2.parentNode?.lastChild).toBeTruthy();
+              expect(errorElement.textContent).toContain(`L'attribut name existe déjà`)
+              //expect(attributeInput2.parentNode?.lastChild?.lastChild?.textContent).toContain(`L'attribut name existe déjà`)
+
+            })
+          })
+
+
+
           describe('if the second attribute is filled', () => {
             beforeEach(() => {
               spyOn(McdTableService.prototype, 'addTable').and.callThrough();
 
               attributeInput2.value = 'email';
               attributeInput2.dispatchEvent(new Event('input'));
-
             });
 
             it('should be able to submit if second attribute is filled', () => {

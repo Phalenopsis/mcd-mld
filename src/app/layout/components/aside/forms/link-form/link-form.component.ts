@@ -6,6 +6,7 @@ import { McdTable } from '../../../../../domain/mcd/models/mcd-table.class';
 import { AsyncPipe } from '@angular/common';
 import { RelationType } from '../../../../../domain/models/relation-type.enum';
 import { McdLink } from '../../../../../domain/mcd/models/mcd-link.class';
+import { TableDoesntExistValidator } from '../validators/table-doesnt-exist/table-doesnt-exist.validator';
 
 @Component({
   selector: 'app-link-form',
@@ -16,6 +17,7 @@ import { McdLink } from '../../../../../domain/mcd/models/mcd-link.class';
 })
 export class LinkFormComponent implements OnInit {
   tableService: McdTableService = inject(McdTableService);
+  tableValidator: TableDoesntExistValidator = inject(TableDoesntExistValidator);
 
   formBuilder = inject(NonNullableFormBuilder);
 
@@ -26,8 +28,8 @@ export class LinkFormComponent implements OnInit {
 
   linkForm = this.formBuilder.group({
     tables: this.formBuilder.group({
-      table1: ['', [Validators.required, this.tableIsKnownValidator()]],
-      table2: ['', [Validators.required, this.tableIsKnownValidator()]],
+      table1: ['', [Validators.required], [this.tableValidator.validate.bind(this.tableValidator)], 'blur'],
+      table2: ['', [Validators.required], [this.tableValidator.validate.bind(this.tableValidator)], 'blur'],
     }, { validators: this.tablesAreDifferentsValidator() }),
 
     action: ['', [Validators.required]],
@@ -73,22 +75,11 @@ export class LinkFormComponent implements OnInit {
     }
   }
 
-  tableIsKnownValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!this.$tableNames) return { tableIsKnown: true };
-      let tablesName: string[] = [];
-      this.$tableNames.pipe(take(1)).subscribe(
-        tables => tablesName = tables
-      )
-      return tablesName.includes(control.value) ? null : { tableIsKnown: true };
-    }
-  }
-
   tablesAreDifferentsValidator(): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const table1 = formGroup.get('table1')?.value;
       const table2 = formGroup.get('table2')?.value;
-      return table1 !== table2 ? null : { namesMatch: true };
-    }
+      return table1 !== table2 ? null : { namesMatch: "Les tables doivent être différentes." };
+    };
   }
 }

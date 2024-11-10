@@ -15,7 +15,7 @@
                         <li>La table 1 est requise.</li>
                     }
                     @if(linkForm.get('tables.table1')?.errors?.['tableIsKnown']){
-                        <li>La table 1 doit exister.</li>
+                        <li>{{ linkForm.get('tables.table1')?.errors?.['tableIsKnown'] }}</li>
                     }
                 </ul>
             }
@@ -32,14 +32,14 @@
                         <li>La table 2 est requise.</li>
                     }
                     @if(linkForm.get('tables.table2')?.errors?.['tableIsKnown']){
-                        <li>La table 2 doit exister.</li>
+                        <li>{{linkForm.get('tables.table2')?.errors?.['tableIsKnown']}}</li>
                     }
                 </ul>
             }
             @if(linkForm.get('tables')?.invalid && linkForm.touched) {
                 <ul class="error">
                     @if(linkForm.get('tables')?.errors?.['namesMatch']) {
-                        <li>Les tables doivent être différentes.</li>
+                        <li>{{linkForm.get('tables')?.errors?.['namesMatch']}}</li>
                     }
                 </ul>
             }

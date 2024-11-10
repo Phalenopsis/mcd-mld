@@ -1,6 +1,6 @@
-import { CartesianCoordinate } from "../../../plan-systems/models/classes/cartesian-coordinate.class";
-import { PositionnalRectangle } from "../../../plan-systems/models/classes/positionnal-rectangle.class";
-import { Rectangle } from "../../../plan-systems/models/classes/rectangle.class";
+import { CartesianCoordinate } from "@plan/models/classes/cartesian-coordinate.class";
+import { PositionnalRectangle } from "@plan/models/classes/positionnal-rectangle.class";
+import { Rectangle } from "@plan/models/classes/rectangle.class";
 
 describe('PositionnalRectangle', () => {
     it('should be same', () => {
@@ -18,7 +18,7 @@ describe('PositionnalRectangle', () => {
         );
         expect(rect1.isSame(rect2)).toBeTrue();
         expect(rect1.isSame(rect3)).toBeFalse();
-    })
+    });
 
     it('should overlap', () => {
         const rect1 = new PositionnalRectangle(
@@ -31,7 +31,7 @@ describe('PositionnalRectangle', () => {
         );
         expect(rect1.isOverlap(rect2)).toBeTrue();
         expect(rect2.isOverlap(rect1)).toBeTrue();
-    })
+    });
 
     it('should not overlap', () => {
         const rect1 = new PositionnalRectangle(
@@ -56,5 +56,5 @@ describe('PositionnalRectangle', () => {
         expect(rect1.isOverlap(rect3)).toBeFalse();
         expect(rect1.isOverlap(rect4)).toBeFalse();
         expect(rect2.isOverlap(rect1)).toBeFalse();
-    })
-})
+    });
+});

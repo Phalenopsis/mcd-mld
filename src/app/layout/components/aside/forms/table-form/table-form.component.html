@@ -2,12 +2,16 @@
     <fieldset>
         <label for="tableName">Nom de la table</label>
         <input type="text" id="tableName" formControlName="tableName">
-        @if (tableForm.controls.tableName.invalid) {
+        @if (tableForm.controls.tableName.dirty  && tableForm.controls.tableName.errors) {
             <ul class="error">
-                <li>Le nom de la table existe déjà</li>
+                @if(tableForm.controls.tableName.errors['required']) {
+                    <li>La table ne doit pas être vide</li>
+                }
+                @if(tableForm.controls.tableName.errors['tableExists']) {
+                    <li>{{tableForm.controls.tableName.errors['tableExists']}}</li>
+                }
             </ul>
         }
-
     </fieldset>
     <fieldset id="tableAttributes" formArrayName="tableAttributes">
         <legend>Champs de la table</legend>
@@ -16,13 +20,23 @@
             <div>
                 <label for="attribute-{{i}}">Champ</label>
                 <input type="text" name="attribute-{{i}}" id="attribute-{{i}}" formControlName="attributeName" appFocus>
+                @if (attribute.invalid) {
+                    <ul class="error">
+                        @if (attribute.get('attributeName')?.hasError('required')) {
+                            <li id="li-error-blank-{{i}}">L'attribut ne doit pas être vide</li>
+                        }
+                        @if(attribute.get('attributeName')?.hasError('attributeExists')) {
+                            
+                            <li id="li-error-exists-{{i}}">{{attribute.get('attributeName')?.getError('attributeExists')}}</li>
+                        }
+                    </ul>
+                }
             </div>
             <button type="button" (click)="removeTableAttribute(i)" aria-label="Supprimer le champ" class="deleteFieldButton">
                 -
                 <span class="info">Supprimer le champ</span>
             </button>
         </fieldset>
-        
     </fieldset>
     <button type="submit" [disabled]="tableForm.invalid">Enregistrer la table</button>
 </form>
