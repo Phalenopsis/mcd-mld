@@ -75,22 +75,11 @@ export class LinkFormComponent implements OnInit {
     }
   }
 
-  tableIsKnownValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!this.$tableNames) return { tableIsKnown: true };
-      let tablesName: string[] = [];
-      this.$tableNames.pipe(take(1)).subscribe(
-        tables => tablesName = tables
-      )
-      return tablesName.includes(control.value) ? null : { tableIsKnown: true };
-    }
-  }
-
   tablesAreDifferentsValidator(): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const table1 = formGroup.get('table1')?.value;
       const table2 = formGroup.get('table2')?.value;
-      return table1 !== table2 ? null : { namesMatch: true };
-    }
+      return table1 !== table2 ? null : { namesMatch: "Les tables doivent être différentes." };
+    };
   }
 }
