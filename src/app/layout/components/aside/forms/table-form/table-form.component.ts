@@ -45,6 +45,7 @@ export class TableFormComponent {
       (this.tableForm.value.tableAttributes as McdTableAttribute[])
         .map((attribute: Attribute) => attribute.attributeName));
     this.tableService.addTable(table);
+    this.tableForm.reset();
   }
 
   attributeExistsValidator(): ValidatorFn {
