@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DrawingService } from './drawing.service';
+import { DrawingCommandService } from './drawing-command.service';
 
 describe('DrawingService', () => {
-  let service: DrawingService;
+  let service: DrawingCommandService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DrawingService);
+    service = TestBed.inject(DrawingCommandService);
   });
 
   it('should be created', () => {
