@@ -23,6 +23,30 @@ export class PositionnalRectangle implements Coordinate<PositionnalRectangle> {
         return this.point;
     }
 
+    getWidth(): number {
+        return this.rect.getWidth();
+    }
+
+    getHeight(): number {
+        return this.rect.getHeight();
+    }
+
+    getX(): number {
+        return this.point.getX();
+    }
+
+    getY(): number {
+        return this.point.getY();
+    }
+
+    getXLimit(): number {
+        return this.getX() + this.getWidth();
+    }
+
+    getYLimit(): number {
+        return this.getY() + this.getHeight();
+    }
+
     isSame(anotherPositionnalRectangle: PositionnalRectangle): boolean {
         return this.point.isSame(anotherPositionnalRectangle.getPoint())
             && this.rect.isSame(anotherPositionnalRectangle.getRect());
@@ -37,8 +61,8 @@ export class PositionnalRectangle implements Coordinate<PositionnalRectangle> {
     }
 
     isOverlap(anotherPositionnalRectangle: PositionnalRectangle): boolean {
-        const thisBottomRight = this.#getBottomRightPoint();
-        const anotherBottomRight = anotherPositionnalRectangle.#getBottomRightPoint();
+        const thisBottomRight = this.getBottomRightPoint();
+        const anotherBottomRight = anotherPositionnalRectangle.getBottomRightPoint();
         if (this.getPoint().getX() > anotherBottomRight.getX()
             || anotherPositionnalRectangle.getPoint().getX() > thisBottomRight.getX())
             return false;
@@ -48,9 +72,13 @@ export class PositionnalRectangle implements Coordinate<PositionnalRectangle> {
         return true;
     }
 
-    #getBottomRightPoint(): CartesianCoordinate {
-        const x = this.getPoint().getX() + this.getRect().getWidth();
-        const y = this.getPoint().getY() + this.getRect().getHeight();
+    protected getBottomRightPoint(): CartesianCoordinate {
+        const x = this.getX() + this.getWidth();
+        const y = this.getY() + this.getHeight();
         return new CartesianCoordinate(x, y);
+    }
+
+    divideInRects(numberParts: number): PositionnalRectangle[] {
+        return this.rect.divideInRects(numberParts, this.getX(), this.getY());
     }
 }
