@@ -56,8 +56,9 @@ describe('Coordinate', () => {
         const point4 = polarPoint4.toCartesian();
 
         expect(point1.isSame(point2)).toBeTrue();
+        expect(polarPoint3.isSame(polarPoint4)).toBeFalse();
         expect(point3.isSame(point4)).toBeTrue();
-    })
+    });
 
     it('should be (100, 100)', () => {
         const point1 = new CartesianCoordinate(0, 0);
