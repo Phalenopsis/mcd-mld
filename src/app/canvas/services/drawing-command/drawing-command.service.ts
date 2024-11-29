@@ -4,16 +4,20 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class DrawingService {
+export class DrawingCommandService {
   $drawOrder: Subject<string> = new Subject<string>();
 
   constructor() { }
 
-  draw() {
-    this.$drawOrder.next("go");
-  }
-
   getDrawOrder(): Observable<string> {
     return this.$drawOrder.asObservable();
+  }
+
+  draw() {
+    this.$drawOrder.next("draw");
+  }
+
+  clear() {
+    this.$drawOrder.next("clear");
   }
 }

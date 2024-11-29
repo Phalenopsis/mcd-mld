@@ -1,4 +1,6 @@
+import { NumberOfCut } from "../types/number-of-cut.type";
 import { CartesianCoordinate } from "./cartesian-coordinate.class";
+import { PositionnalRectangle } from "./positionnal-rectangle.class";
 
 export class Rectangle {
     public static buildFromCanvas(canvas: HTMLCanvasElement): Rectangle {
@@ -31,5 +33,31 @@ export class Rectangle {
 
     isSame(rect: Rectangle): boolean {
         return this.height === rect.height && this.width === rect.width;
+    }
+
+    calcDivideInParts(numberParts: number): NumberOfCut {
+        const n = Math.sqrt(numberParts) - 1;
+        const h = Math.ceil(n);
+        let v;
+        n === h ? v = h : v = h - 1;
+        return {
+            horizontally: h,
+            vertically: v
+        };
+    }
+
+    divideInRects(numberParts: number, xStart: number = 0, yStart: number = 0): PositionnalRectangle[] {
+        const parts = [];
+        const numberOfCut: NumberOfCut = this.calcDivideInParts(numberParts);
+        const width = this.width / (numberOfCut.horizontally + 1);
+        const height = this.height / (numberOfCut.vertically + 1);
+        for (let x = 0; x <= numberOfCut.horizontally; x += 1) {
+            for (let y = 0; y <= numberOfCut.vertically; y += 1) {
+                const position = new CartesianCoordinate(x * width + xStart, y * height + yStart);
+                const rect = new PositionnalRectangle(position, new Rectangle(width, height));
+                parts.push(rect);
+            }
+        }
+        return parts;
     }
 }

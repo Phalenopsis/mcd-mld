@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DrawingService } from '../../../canvas/services/drawing/drawing.service';
+import { DrawingCommandService } from '../../../canvas/services/drawing-command/drawing-command.service';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,9 +10,13 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  drawingService: DrawingService = inject(DrawingService);
+  drawingService: DrawingCommandService = inject(DrawingCommandService);
 
   draw() {
     this.drawingService.draw();
+  }
+
+  clear() {
+    this.drawingService.clear();
   }
 }

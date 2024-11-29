@@ -57,4 +57,43 @@ describe('PositionnalRectangle', () => {
         expect(rect1.isOverlap(rect4)).toBeFalse();
         expect(rect2.isOverlap(rect1)).toBeFalse();
     });
+
+    it('should test limits', () => {
+        const rect1 = new PositionnalRectangle(
+            new CartesianCoordinate(0, 0),
+            new Rectangle(10, 10)
+        );
+        const limX = rect1.getXLimit();
+        const limY = rect1.getYLimit();
+        expect(limX).toEqual(10);
+        expect(limY).toEqual(10);
+    });
+
+    it('should be 10 distance', () => {
+        const rect1 = new PositionnalRectangle(
+            new CartesianCoordinate(0, 0),
+            new Rectangle(10, 10)
+        );
+        const rect2 = new PositionnalRectangle(
+            new CartesianCoordinate(10, 0),
+            new Rectangle(10, 10)
+        );
+        const dist = rect1.distanceTo(rect2);
+        expect(dist).toEqual(10);
+    });
+
+    it('should divide in 4 parts', () => {
+        const rect1 = new PositionnalRectangle(
+            new CartesianCoordinate(0, 0),
+            new Rectangle(10, 10)
+        );
+
+        const parts = rect1.divideInRects(4);
+        expect(parts.length).toEqual(4);
+        expect(parts[0].getPoint()).toEqual(new CartesianCoordinate(0, 0));
+        expect(parts[1].getPoint()).toEqual(new CartesianCoordinate(0, 5));
+        expect(parts[2].getPoint()).toEqual(new CartesianCoordinate(5, 0));
+        expect(parts[3].getPoint()).toEqual(new CartesianCoordinate(5, 5));
+        expect(parts[3].getRect()).toEqual(new Rectangle(5, 5));
+    });
 });
