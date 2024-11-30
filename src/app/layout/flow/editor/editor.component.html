@@ -1,0 +1,15 @@
+<p contenteditable="true" debounceKeyUp [debounceTime]="500" #editor (onEvent)="sendCode(editor.innerText)">
+    # Editez le code à cet endroit<br>
+    # mots clé utiles :<br>
+    # <strong>subject quelquechose</strong> => permet de créer un subject nommé quelquechose<br>
+    # les sujets sont crées dans l'ordre de déclaration<br>
+    # <strong>machine autreChose</strong> => permet de créer une machine nommée autreChose<br>
+    <br>
+    <br>
+    declare subject customer<br>
+    declare machine front-end<br>
+    declare machine back-end<br>
+    declare machine bdd<br>
+    action customer click front-end<br>
+    <br>
+</p>
