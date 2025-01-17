@@ -7,10 +7,11 @@ import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 })
 export class McdTableService {
   tables = [
-    new McdTable("Auteur", ["id", "nom", "prénom"]),
-    new McdTable("Livre", ["id", "titre", "éditeur", "nombre de pages"]),
-    new McdTable("Voiture", ["model", "marque"]),
-    new McdTable("Couleur", ["nom"]),
+    new McdTable("User", ["id", "email", "password"]),
+    new McdTable("Project", ["id", "name", "user_id", "projecttype_id"]),
+    new McdTable("ProjectType", ["id", "name"]),
+    new McdTable("Bdd", ["id", "nom", "user_id"]),
+    new McdTable("Flow", ["id", "nom", "user_id"]),
     new McdTable("Passager", ["nom", "prenom"])
   ];
   $tableList: BehaviorSubject<McdTable[]> = new BehaviorSubject(this.tables);
