@@ -8,15 +8,14 @@ import { PageComponent } from './layout/components/page/page.component';
 export const routes: Routes = [
     {
         path: '',
-        children: [
-            {
-                path: '',
-                component: PageComponent
-            },
-            {
-                path: 'flow',
-                component: FlowPageComponent
-            }
-        ]
-    }
+        component: PageComponent
+    },
+    {
+        path: 'flow',
+        component: FlowPageComponent
+    },
+
+    { path: 'canvas', component: MainCanvasComponent },
+    { path: 'list', component: TableListComponent }
+
 ];
